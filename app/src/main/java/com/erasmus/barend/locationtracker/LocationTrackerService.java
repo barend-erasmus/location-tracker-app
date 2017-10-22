@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.IBinder;
 
 import com.erasmus.barend.locationtracker.listeners.LocationTrackerLocationListener;
+import com.erasmus.barend.locationtracker.repositories.BaseRepository;
 
 public class LocationTrackerService extends Service {
 
@@ -35,13 +36,24 @@ public class LocationTrackerService extends Service {
         _locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         _locationListener = new LocationTrackerLocationListener(LocationTrackerService.this.getApplicationContext());
 
+        ConfigureLocationManager();
+
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
+    public void onDestroy() {
+
+        _locationManager.removeUpdates(_locationListener);
+        _locationManager = null;
+
+        super.onDestroy();
+    }
+
+    private void ConfigureLocationManager() {
         Criteria criteria = new Criteria();
 
         String providerName = _locationManager.getBestProvider(criteria, false);
-
-        if (!_locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            OpenLocationSourceSettings();
-        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -49,13 +61,6 @@ public class LocationTrackerService extends Service {
             }
         }
 
-        _locationManager.requestLocationUpdates(providerName, 1500, 10, _locationListener);
-
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-    private void OpenLocationSourceSettings() {
-        Intent locationSourceSettingsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-        startActivity(locationSourceSettingsIntent);
+        _locationManager.requestLocationUpdates(providerName, 1000, 5, _locationListener);
     }
 }

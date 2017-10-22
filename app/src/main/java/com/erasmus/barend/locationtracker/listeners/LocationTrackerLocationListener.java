@@ -9,6 +9,12 @@ import android.widget.Toast;
 
 import com.erasmus.barend.locationtracker.LocationTrackerService;
 import com.erasmus.barend.locationtracker.MainActivity;
+import com.erasmus.barend.locationtracker.loggers.FileLogger;
+import com.erasmus.barend.locationtracker.repositories.LocationRepository;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created by Barend Erasmus on 10/21/2017.
@@ -17,15 +23,19 @@ import com.erasmus.barend.locationtracker.MainActivity;
 public class LocationTrackerLocationListener implements LocationListener {
 
     private Context _context;
+    private LocationRepository _locationRepository;
+    private FileLogger _logger;
 
     public LocationTrackerLocationListener(Context context) {
+
         _context = context;
+        _locationRepository = new LocationRepository(_context);
+        _logger = FileLogger.GetLogger("location-tracker");
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        Toast.makeText(_context, location.getLatitude() + ", " + location.getLongitude(),
-                Toast.LENGTH_LONG).show();
+        _locationRepository.Insert(location.getLongitude(), location.getLatitude(), new Date());
     }
 
     @Override
@@ -35,11 +45,11 @@ public class LocationTrackerLocationListener implements LocationListener {
 
     @Override
     public void onProviderEnabled(String provider) {
-
+        _logger.Info(String.format("%s enabled", provider));
     }
 
     @Override
     public void onProviderDisabled(String provider) {
-
+        _logger.Info(String.format("%s disabled", provider));
     }
 }
