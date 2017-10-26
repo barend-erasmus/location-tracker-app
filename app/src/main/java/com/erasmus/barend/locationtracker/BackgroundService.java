@@ -1,7 +1,6 @@
 package com.erasmus.barend.locationtracker;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -13,14 +12,16 @@ import android.os.Build;
 import android.os.IBinder;
 
 import com.erasmus.barend.locationtracker.listeners.LocationTrackerLocationListener;
-import com.erasmus.barend.locationtracker.repositories.BaseRepository;
+import com.erasmus.barend.locationtracker.services.LocationTrackerService;
 
-public class LocationTrackerService extends Service {
+public class BackgroundService extends Service {
 
     private LocationManager _locationManager;
     private LocationListener _locationListener;
 
-    public LocationTrackerService() {
+    private LocationTrackerService _locationTrackerService;
+
+    public BackgroundService() {
 
     }
 
@@ -33,8 +34,10 @@ public class LocationTrackerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
+        _locationTrackerService = new LocationTrackerService(BackgroundService.this.getApplicationContext());
+
         _locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        _locationListener = new LocationTrackerLocationListener(LocationTrackerService.this.getApplicationContext());
+        _locationListener = new LocationTrackerLocationListener(_locationTrackerService);
 
         ConfigureLocationManager();
 

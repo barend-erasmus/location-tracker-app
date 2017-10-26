@@ -1,13 +1,9 @@
 package com.erasmus.barend.locationtracker.loggers;
 
-import android.os.Environment;
-
 import com.erasmus.barend.locationtracker.utilities.FileHelper;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created by Barend Erasmus on 10/22/2017.
@@ -28,11 +24,10 @@ public class FileLogger {
     public void Info(String message) {
 
         try {
-            File sdCardPath = Environment.getExternalStorageDirectory();
 
             FileOutputStream fileOutputStream = new FileOutputStream(FileHelper.GetExternalStoragePath(_name + ".log"), true);
 
-            fileOutputStream.write(message.getBytes());
+            fileOutputStream.write((new Date().toString() + " - " + message).getBytes());
             fileOutputStream.write(System.getProperty("line.separator").getBytes());
 
             fileOutputStream.flush();

@@ -13,10 +13,12 @@ public final class LocationEntry implements BaseColumns {
                     LocationEntry._ID + " INTEGER PRIMARY KEY," +
                     LocationEntry.COLUMN_NAME_LATITUDE + " REAL," +
                     LocationEntry.COLUMN_NAME_LONGITUDE + " REAL," +
+                    LocationEntry.COLUMN_NAME_SPEED + " REAL," +
                     LocationEntry.COLUMN_NAME_TIMESTAMP + " NUMERIC)";
 
     public static final String TABLE_NAME = "location";
-    public static final String COLUMN_NAME_LATITUDE = "lat";
-    public static final String COLUMN_NAME_LONGITUDE = "long";
+    public static final String COLUMN_NAME_LATITUDE = "latitude";
+    public static final String COLUMN_NAME_LONGITUDE = "longitude";
+    public static final String COLUMN_NAME_SPEED = "speed";
     public static final String COLUMN_NAME_TIMESTAMP = "timestamp";
 }

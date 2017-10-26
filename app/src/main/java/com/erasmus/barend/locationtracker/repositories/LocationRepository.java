@@ -18,12 +18,13 @@ public class LocationRepository extends BaseRepository {
         super(context);
     }
 
-    public void Insert(double longitude, double latitude, Date timestamp) {
+    public void Insert(double longitude, double latitude, double speed, Date timestamp) {
         SQLiteDatabase database = getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(LocationEntry.COLUMN_NAME_LONGITUDE, longitude);
         values.put(LocationEntry.COLUMN_NAME_LATITUDE, latitude);
+        values.put(LocationEntry.COLUMN_NAME_SPEED, speed);
         values.put(LocationEntry.COLUMN_NAME_TIMESTAMP, timestamp.getTime());
 
         long rowId = database.insert(LocationEntry.TABLE_NAME, null, values);
