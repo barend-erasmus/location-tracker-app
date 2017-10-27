@@ -3,8 +3,6 @@ package com.erasmus.barend.locationtracker.listeners;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
-
-import com.erasmus.barend.locationtracker.loggers.FileLogger;
 import com.erasmus.barend.locationtracker.services.LocationTrackerService;
 
 /**
@@ -14,18 +12,23 @@ import com.erasmus.barend.locationtracker.services.LocationTrackerService;
 public class LocationTrackerLocationListener implements LocationListener {
 
     private LocationTrackerService _locationTrackerService;
-    private FileLogger _logger;
 
     public LocationTrackerLocationListener(LocationTrackerService locationTrackerService) {
-
-        _logger = FileLogger.GetLogger("location-tracker");
         _locationTrackerService = locationTrackerService;
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        _locationTrackerService.Log(location.getLongitude(), location.getLatitude(), location.getSpeed());
-        _logger.Info(String.format("Location changed"));
+
+        float accuracy = location.hasAccuracy()? location.getAccuracy() : -1;
+        float speed = location.hasSpeed()? location.getSpeed() : -1;
+        double altitude = location.hasAltitude()? location.getAltitude() : -1;
+        double bearing = location.hasBearing()? location.getBearing() : -1;
+
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+
+        _locationTrackerService.Log(accuracy, altitude, bearing, speed, longitude, latitude);
     }
 
     @Override
@@ -35,11 +38,9 @@ public class LocationTrackerLocationListener implements LocationListener {
 
     @Override
     public void onProviderEnabled(String provider) {
-        _logger.Info(String.format("%s enabled", provider));
     }
 
     @Override
     public void onProviderDisabled(String provider) {
-        _logger.Info(String.format("%s disabled", provider));
     }
 }
