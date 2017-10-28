@@ -123,10 +123,17 @@ public class LocationTrackerService {
                 try {
                     List<Location> locations = _locationRepository.List();
 
-                    UploadDatabase(locations, deviceId);
+                    for (int i = 0; i < Math.ceil((double) locations.size() / (double) 300); i++) {
 
-                    for (Location location : locations) {
-                        _locationRepository.MarkAsUploaded(location.Timestamp);
+                        int startIndex = i * 300;
+                        int endIndex = (i + 1) * 300;
+                        List<Location> tempLocations = locations.subList(startIndex, endIndex > locations.size() ? locations.size() - 1 : endIndex);
+
+                        UploadDatabase(tempLocations, deviceId);
+
+                        for (Location location : tempLocations) {
+                            _locationRepository.MarkAsUploaded(location.Timestamp);
+                        }
                     }
 
                     Handler handler2 = new Handler(Looper.getMainLooper());
@@ -211,7 +218,7 @@ public class LocationTrackerService {
                 5000); // Timeout Limit
         HttpResponse response;
 
-        HttpPost post = new HttpPost("http://192.168.1.74:3000/location/create");
+        HttpPost post = new HttpPost("http://location-tracker.openservices.co.za/location/create");
 
         StringEntity se = new StringEntity(json);
         se.setContentType(new BasicHeader(HTTP.CONTENT_TYPE,
