@@ -47,7 +47,7 @@ public class LocationTrackerService {
 
     private Button _btnStartService;
     private Button _btnStopService;
-    private Button _btnExportDatabase;
+    private Button _btnUploadDatabase;
 
     private ProgressDialog progress;
 
@@ -62,13 +62,13 @@ public class LocationTrackerService {
         _locationRepository = new LocationRepository(_context);
     }
 
-    public LocationTrackerService(Context context, Button btnStartService, Button btnStopService, Button btnExportDatabase) {
+    public LocationTrackerService(Context context, Button btnStartService, Button btnStopService, Button btnUploadDatabase) {
 
         this(context);
 
         _btnStartService = btnStartService;
         _btnStopService = btnStopService;
-        _btnExportDatabase = btnExportDatabase;
+        _btnUploadDatabase = btnUploadDatabase;
 
         if (IsServiceRunning(BackgroundService.class)) {
             _btnStartService.setEnabled(false);
@@ -107,18 +107,6 @@ public class LocationTrackerService {
             _btnStartService.setEnabled(true);
             _btnStopService.setEnabled(false);
         }
-    }
-
-    private void ExportDatabase() {
-        // File src = _context.getDatabasePath(BaseRepository.DATABASE_NAME);
-        // File dest = new File(FileHelper.GetExternalStoragePath(String.format("location-tracker-backup-%s.db", new Date().getTime())));
-
-        // FileHelper.Copy(src, dest);
-
-        UploadDatabase();
-
-        Toast.makeText(_context, "Successfully exported database.",
-                Toast.LENGTH_LONG).show();
     }
 
     private void UploadDatabase() {
@@ -207,9 +195,9 @@ public class LocationTrackerService {
             }
         });
 
-        _btnExportDatabase.setOnClickListener(new View.OnClickListener() {
+        _btnUploadDatabase.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                ExportDatabase();
+                UploadDatabase();
             }
         });
     }

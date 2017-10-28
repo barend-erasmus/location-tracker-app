@@ -25,9 +25,9 @@ public class MainActivity extends Activity {
 
         Button btnStartService = (Button) findViewById(R.id.btn_start_service);
         Button btnStopService = (Button) findViewById(R.id.btn_stop_service);
-        Button btnExportDatabase = (Button) findViewById(R.id.btn_export_database);
+        Button btnUploadDatabase = (Button) findViewById(R.id.btn_upload_database);
 
-        _locationTrackerService = new LocationTrackerService(MainActivity.this, btnStartService, btnStopService, btnExportDatabase);
+        _locationTrackerService = new LocationTrackerService(MainActivity.this, btnStartService, btnStopService, btnUploadDatabase);
     }
 
 

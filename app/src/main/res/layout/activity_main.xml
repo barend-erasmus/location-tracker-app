@@ -21,8 +21,8 @@
         android:text="Stop Service" />
 
     <Button
-        android:id="@+id/btn_export_database"
+        android:id="@+id/btn_upload_database"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:text="Export Database" />
+        android:text="Upload Database" />
 </LinearLayout>
