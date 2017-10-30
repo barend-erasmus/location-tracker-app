@@ -64,6 +64,6 @@ public class BackgroundService extends Service {
             }
         }
 
-        _locationManager.requestLocationUpdates(providerName, 1000, 5, _locationListener);
+        _locationManager.requestLocationUpdates(providerName, 30000, 10, _locationListener);
     }
 }
