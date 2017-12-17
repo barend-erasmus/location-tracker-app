@@ -26,8 +26,9 @@ public class MainActivity extends Activity {
         Button btnStartService = (Button) findViewById(R.id.btn_start_service);
         Button btnStopService = (Button) findViewById(R.id.btn_stop_service);
         Button btnUploadDatabase = (Button) findViewById(R.id.btn_upload_database);
+        Button btnExportDatabase = (Button) findViewById(R.id.btn_export_database);
 
-        _locationTrackerService = new LocationTrackerService(MainActivity.this, btnStartService, btnStopService, btnUploadDatabase);
+        _locationTrackerService = new LocationTrackerService(MainActivity.this, btnStartService, btnStopService, btnUploadDatabase, btnExportDatabase);
     }
 
 
@@ -47,12 +48,14 @@ public class MainActivity extends Activity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if ((checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                     && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) ||
-                    checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                    checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED ||
+                    checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
                 requestPermissions(new String[]{
                         Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.READ_PHONE_STATE
+                        Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
                 }, REQUEST_LOCATION_PERMISSIONS_RESULT_CODE);
             }
         }

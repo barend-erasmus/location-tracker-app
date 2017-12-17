@@ -48,6 +48,7 @@ public class LocationTrackerService {
     private Button _btnStartService;
     private Button _btnStopService;
     private Button _btnUploadDatabase;
+    private Button _btnExportDatabase;
 
     private ProgressDialog progress;
 
@@ -62,13 +63,14 @@ public class LocationTrackerService {
         _locationRepository = new LocationRepository(_context);
     }
 
-    public LocationTrackerService(Context context, Button btnStartService, Button btnStopService, Button btnUploadDatabase) {
+    public LocationTrackerService(Context context, Button btnStartService, Button btnStopService, Button btnUploadDatabase, Button btnExportDatabase) {
 
         this(context);
 
         _btnStartService = btnStartService;
         _btnStopService = btnStopService;
         _btnUploadDatabase = btnUploadDatabase;
+        _btnExportDatabase = btnExportDatabase;
 
         if (IsServiceRunning(BackgroundService.class)) {
             _btnStartService.setEnabled(false);
@@ -189,6 +191,16 @@ public class LocationTrackerService {
         return false;
     }
 
+    private void ExportDatabase() {
+        File src = _context.getDatabasePath(BaseRepository.DATABASE_NAME);
+        File dest = new File(FileHelper.GetExternalStoragePath(String.format("location-tracker-%s.db", new Date().getTime())));
+
+        FileHelper.Copy(src, dest);
+
+        Toast.makeText(_context, "Successfully exported database.",
+                Toast.LENGTH_LONG).show();
+    }
+
     private void ConfigureOnClickListeners() {
         _btnStartService.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -205,6 +217,12 @@ public class LocationTrackerService {
         _btnUploadDatabase.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 UploadDatabase();
+            }
+        });
+
+        _btnExportDatabase.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ExportDatabase();
             }
         });
     }
@@ -239,11 +257,11 @@ public class LocationTrackerService {
         return s.hasNext() ? s.next() : "";
     }
 
-    private void ShowDialog(String title, String Message) {
+    private void ShowDialog(String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(
                 _context);
         builder.setTitle(title);
-        builder.setMessage(Message);
+        builder.setMessage(message);
         builder.setCancelable(true);
         builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
