@@ -100,6 +100,51 @@ public class LocationRepository extends BaseRepository {
         return result;
     }
 
+    public int MaxSpeed() {
+
+        if (_readableDatabase == null) {
+            _readableDatabase = getReadableDatabase();
+        }
+
+        Cursor cursor = _readableDatabase.query(LocationEntry.TABLE_NAME, new String[] { "MAX(" + LocationEntry.COLUMN_NAME_SPEED + ")" }, null, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            return cursor.getInt(0);
+        }
+
+        return -1;
+    }
+
+    public int AverageSpeed() {
+
+        if (_readableDatabase == null) {
+            _readableDatabase = getReadableDatabase();
+        }
+
+        Cursor cursor = _readableDatabase.query(LocationEntry.TABLE_NAME, new String[] { "AVG(" + LocationEntry.COLUMN_NAME_SPEED + ")" }, null, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            return cursor.getInt(0);
+        }
+
+        return -1;
+    }
+
+    public int NumberOfEntries() {
+
+        if (_readableDatabase == null) {
+            _readableDatabase = getReadableDatabase();
+        }
+
+        Cursor cursor = _readableDatabase.query(LocationEntry.TABLE_NAME, new String[] { "COUNT(*)" }, null, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            return cursor.getInt(0);
+        }
+
+        return -1;
+    }
+
     public void Close() {
         if (_writableDatabase != null) {
             _writableDatabase.close();

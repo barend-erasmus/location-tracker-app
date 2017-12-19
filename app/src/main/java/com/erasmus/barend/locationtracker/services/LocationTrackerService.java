@@ -15,6 +15,7 @@ import android.os.Looper;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.erasmus.barend.locationtracker.BackgroundService;
@@ -49,6 +50,9 @@ public class LocationTrackerService {
     private Button _btnStopService;
     private Button _btnUploadDatabase;
     private Button _btnExportDatabase;
+    private TextView _txtNumberOfEntries;
+    private TextView _txtMaxSpeed;
+    private TextView _txtAvgSpeed;
 
     private ProgressDialog progress;
 
@@ -63,7 +67,14 @@ public class LocationTrackerService {
         _locationRepository = new LocationRepository(_context);
     }
 
-    public LocationTrackerService(Context context, Button btnStartService, Button btnStopService, Button btnUploadDatabase, Button btnExportDatabase) {
+    public LocationTrackerService(Context context,
+                                  Button btnStartService,
+                                  Button btnStopService,
+                                  Button btnUploadDatabase,
+                                  Button btnExportDatabase,
+                                  TextView txtNumberOfEntries,
+                                  TextView txtMaxSpeed,
+                                  TextView txtAvgSpeed) {
 
         this(context);
 
@@ -71,6 +82,9 @@ public class LocationTrackerService {
         _btnStopService = btnStopService;
         _btnUploadDatabase = btnUploadDatabase;
         _btnExportDatabase = btnExportDatabase;
+        _txtNumberOfEntries = txtNumberOfEntries;
+        _txtMaxSpeed = txtMaxSpeed;
+        _txtAvgSpeed = txtAvgSpeed;
 
         if (IsServiceRunning(BackgroundService.class)) {
             _btnStartService.setEnabled(false);
@@ -78,6 +92,10 @@ public class LocationTrackerService {
         }
 
         ConfigureOnClickListeners();
+
+        _txtNumberOfEntries.setText("Number of Entries: " + _locationRepository.NumberOfEntries());
+        _txtMaxSpeed.setText("Max Speed (m/s): " + _locationRepository.MaxSpeed());
+        _txtAvgSpeed.setText("Average Speed (m/s): " + _locationRepository.AverageSpeed());
     }
 
     public void Log(float accuracy, double altitude, double bearing, float speed, double longitude, double latitude) {

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.erasmus.barend.locationtracker.services.LocationTrackerService;
 
@@ -28,7 +29,11 @@ public class MainActivity extends Activity {
         Button btnUploadDatabase = (Button) findViewById(R.id.btn_upload_database);
         Button btnExportDatabase = (Button) findViewById(R.id.btn_export_database);
 
-        _locationTrackerService = new LocationTrackerService(MainActivity.this, btnStartService, btnStopService, btnUploadDatabase, btnExportDatabase);
+        TextView txtNumberOfEntries = (TextView) findViewById(R.id.txt_number_of_entries);
+        TextView txtMaxSpeed = (TextView) findViewById(R.id.txt_max_speed);
+        TextView txtAvgSpeed = (TextView) findViewById(R.id.txt_avg_speed);
+
+        _locationTrackerService = new LocationTrackerService(MainActivity.this, btnStartService, btnStopService, btnUploadDatabase, btnExportDatabase, txtNumberOfEntries, txtMaxSpeed, txtAvgSpeed);
     }
 
 
